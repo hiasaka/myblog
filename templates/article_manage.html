@@ -1,0 +1,157 @@
+{% extends 'layout.html' %}
+{% block css %}
+    <style>
+        .active {
+            background-color: lightgrey;
+            color: white;
+        }
+
+        .find {
+            float: right;
+        }
+
+    </style>
+
+{% endblock %}
+{% block xx %}
+    <div>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand">文章列表</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <span>筛选条件</span>
+    <div>
+        <ul class="nav nav-pills">
+            {% if kwargs.article_type_id == 0 %}
+                <li><a class='active'
+                       href="/myblog/manager/article-0-{{ kwargs.tags__nid }}-{{ kwargs.category_id }}.html">全部</a></li>
+            {% else %}
+                <li><a href="/myblog/manager/article-0-{{ kwargs.tags__nid }}-{{ kwargs.category_id }}.html">全部</a></li>
+            {% endif %}
+            {% for i in type_list %}
+                {% if i.0 == kwargs.article_type_id %}
+                    <li><a class='active'
+                           href="/myblog/manager/article-{{ i.0 }}-{{ kwargs.tags__nid }}-{{ kwargs.category_id }}.html">{{ i.1 }}</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="/myblog/manager/article-{{ i.0 }}-{{ kwargs.tags__nid }}-{{ kwargs.category_id }}.html">{{ i.1 }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <ul class="nav nav-pills">
+            {% if kwargs.tags__nid == 0 %}
+                <li><a class='active'
+                       href="/myblog/manager/article-{{ kwargs.article_type_id }}-0-{{ kwargs.category_id }}.html">全部</a>
+                </li>
+            {% else %}
+                <li><a
+                        href="/myblog/manager/article-{{ kwargs.article_type_id }}-0-{{ kwargs.category_id }}.html">全部</a>
+                </li>
+            {% endif %}
+            {% for i in tag_list %}
+                {% if i.nid == kwargs.tags__nid %}
+                    <li><a class="active"
+                           href="/myblog/manager/article-{{ kwargs.article_type_id }}-{{ i.nid }}-{{ kwargs.category_id }}.html">{{ i.title }}</a>
+                    </li>
+                {% else %}
+                    <li><a
+                            href="/myblog/manager/article-{{ kwargs.article_type_id }}-{{ i.nid }}-{{ kwargs.category_id }}.html">{{ i.title }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <ul class="nav nav-pills">
+            {% if kwargs.category_id == 0 %}
+                <li><a class="active"
+                       href="/myblog/manager/article-{{ kwargs.article_type_id }}-{{ kwargs.tags__nid }}-0.html">全部</a>
+                    {% else %}
+                <li><a
+                    href="/myblog/manager/article-{{ kwargs.article_type_id }}-{{ kwargs.tags__nid }}-0.html">全部</a>
+            {% endif %}
+            </li>
+            {% for i in category_list %}
+                {% if i.nid == kwargs.category_id %}
+                    <li><a class="active"
+                           href="/myblog/manager/article-{{ kwargs.article_type_id }}-{{ kwargs.tags__nid }}-{{ i.nid }}.html">{{ i.title }}</a>
+                        {% else %}
+                    <li><a
+                        href="/myblog/manager/article-{{ kwargs.article_type_id }}-{{ kwargs.tags__nid }}-{{ i.nid }}.html">{{ i.title }}</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <a class="navbar-brand"><i class="fa fa-search" aria-hidden="true"></i>搜索文章</a>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="navbar-brand" href="#"><i class="fa fa-plus" aria-hidden="true"></i>添加文章</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>文章标题</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in article_list %}
+            <tr>
+                <td>{{ i.title }}</td>
+                <td><a><i class="fa fa-trash" aria-hidden="true"></i>删除|</a>
+                    <a href="/myblog/edit/{{ i.nid }}.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>编辑</a></td>
+            </tr>
+        {% endfor %}
+
+
+
+
+        </tbody>
+    </table>
+    <div class="page">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {{ page_info.pager|safe }}
+            </ul>
+        </nav>
+    </div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
